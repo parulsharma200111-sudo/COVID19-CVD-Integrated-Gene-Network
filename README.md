@@ -1,120 +1,73 @@
-# R Analysis
-# 1. Installation
+# Identification of Common Gene Signatures Between COVID-19 and Cardiovascular Disease (CVD)
 
-### Install CRAN Packages
+## Overview
 
-```r
-install.packages(c("openxlsx", "writexl"))
-````
-
-### Install Bioconductor Packages
-
-```r
-if (!requireNamespace("BiocManager", quietly = TRUE))
-  install.packages("BiocManager")
-
-BiocManager::install(c(
-  "clusterProfiler",
-  "org.Hs.eg.db",
-  "enrichplot",
-  "ReactomePA"
-))
-```
+This project investigates shared molecular mechanisms between COVID-19 and cardiovascular disease (CVD) using bioinformatics and systems biology approaches.
 
 ---
 
-#  2. Load Required Libraries
+# Objectives
 
-```r
-library(clusterProfiler)
-library(org.Hs.eg.db)
-library(enrichplot)
-library(ReactomePA)
-library(openxlsx)
-library(writexl)
-```
+* Identify common genes between COVID-19 and CVD
+* Analyze shared pathways and immune responses
+* Construct PPI and regulatory networks
+* Identify hub genes as potential therapeutic targets
 
 ---
 
-# 3. Input Gene List
+# Methodology
 
-```r
-gene_symbols <- c(
-  "NFKB1", "TNF", "CCL2", "IL2", "IFNA1",
-  "CXCL10", "IL10", "CD4", "TLR4", "CXCL8",
-  "IL1B", "IL18", "IL1A", "IL4", "IFNG",
-  "IL6", "CSF2", "CD8A", "IL17A", "STAT3"
-)
-```
+* Gene collection from **GeneCards**
+* Common gene identification using **Venn analysis**
+* PPI network construction using **STRING**
+* Hub gene analysis using **Cytoscape & CytoHubba**
+* GO, KEGG, and Reactome enrichment analysis using **R**
+* TF-gene and miRNA regulatory network analysis
 
 ---
 
-#  4. Convert SYMBOL → ENTREZ ID
+# Tools Used
 
-```r
-gene_entrez <- bitr(
-  gene_symbols,
-  fromType = "SYMBOL",
-  toType   = "ENTREZID",
-  OrgDb    = org.Hs.eg.db
-)
-```
-
----
-
-#  5. Enrichment Analysis
-
-##  GO Enrichment
-
-```r
-go_results <- enrichGO(
-  gene          = gene_entrez$ENTREZID,
-  OrgDb         = org.Hs.eg.db,
-  keyType       = "ENTREZID",
-  ont           = "ALL",
-  pAdjustMethod = "BH",
-  pvalueCutoff  = 0.05,
-  qvalueCutoff  = 0.2
-)
-```
+* GeneCards
+* STRING Database
+* Cytoscape
+* CytoHubba
+* R Programming
+* clusterProfiler
+* ReactomePA
+* enrichplot
 
 ---
 
-##  KEGG Pathway Enrichment
+# Key Findings
 
-```r
-kegg_results <- enrichKEGG(
-  gene         = gene_entrez$ENTREZID,
-  organism     = "hsa",
-  pvalueCutoff = 0.05
-)
-```
+Common pathways identified:
 
----
+* Cytokine signaling
+* IL-17 signaling
+* TNF signaling
+* Chemokine signaling
+* Immune and inflammatory pathways
 
-##  Reactome Pathway Enrichment
+Key hub genes:
 
-```r
-reactome_results <- enrichPathway(
-  gene         = gene_entrez$ENTREZID,
-  organism     = "human",
-  pvalueCutoff = 0.05,
-  readable     = TRUE
-)
-```
+* TNF
+* IL6
+* IL1B
+* STAT3
+* CXCL8
 
 ---
 
-#  6. Export All Results to Excel
+# Conclusion
 
-```r
-write.xlsx(
-  list(
-    GO_Enrichment       = as.data.frame(go_results),
-    KEGG_Enrichment     = as.data.frame(kegg_results),
-    Reactome_Enrichment = as.data.frame(reactome_results)
-  ),
-  file = "Enrichment_Results.xlsx"
-)
+The study identified shared inflammatory and immune-related molecular mechanisms between COVID-19 and CVD. These findings may help in biomarker discovery and development of targeted therapeutic strategies.
+
+---
+
+# Author
+
+**Parul Sharma**
 
 
+GitHub: `https://github.com/parulsharma200111-sudo`
